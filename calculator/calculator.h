@@ -1,1 +1,16 @@
-// В этом файле объявления функций.
+#pragma once
+#include <string>
+
+using Number = double;
+
+// Возвращает true, если удалось прочитать число
+// и сохранить его в Number.
+bool ReadNumber(Number& result);
+
+// Возвращает true, если работа завершилась штатно 
+// командой q. Если из-за ошибки, возвращает false.
+bool RunCalculatorCycle();
+
+int CalculatorCommands(std::string& command);
+
+void Calculation (int command, Number& result, Number number_2, bool& result_inf);
