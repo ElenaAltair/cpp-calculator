@@ -1,6 +1,6 @@
 #include "calculator.h"
 
-int main() 
-{ 
-    RunCalculatorCycle();
+int main()
+{
+    return RunCalculatorCycle() ? 0 : 1;
 }

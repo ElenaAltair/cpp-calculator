@@ -7,10 +7,10 @@ using Number = double;
 // и сохранить его в Number.
 bool ReadNumber(Number& result);
 
-// Возвращает true, если работа завершилась штатно 
+// Возвращает true, если работа завершилась штатно
 // командой q. Если из-за ошибки, возвращает false.
 bool RunCalculatorCycle();
 
-int CalculatorCommands(std::string& command);
+int ReadCommand(std::string& command);
 
-void Calculation (int command, Number& result, Number number_2, bool& result_inf);
+void Calculate(int command, Number &result, Number number_2);

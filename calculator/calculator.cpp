@@ -3,8 +3,19 @@
 #include <string>
 #include <cmath>
 
-// Возвращает true, если удалось прочитать число
-// и сохранить его в Number.
+const int COMMAND_EXIT_BY_ERROR = -1;
+const int COMMAND_EXIT = 1;
+const int COMMAND_RESET = 2;
+const int COMMAND_EQUALLY = 3;
+const int COMMAND_PLUS = 10;
+const int COMMAND_MINUS = 11;
+const int COMMAND_MULTIPLY = 12;
+const int COMMAND_RAISE_TO_POWER = 13;
+const int COMMAND_DIVIDED = 14;
+const int COMMAND_NEW_NUMBER = 15;
+const int COMMAND_SAVE = 16;
+const int COMMAND_EXTRACT_FROM_MEMORY = 17;
+
 bool ReadNumber(Number& result)
 {
     bool is_number = true;
@@ -13,159 +24,161 @@ bool ReadNumber(Number& result)
     {
         std::cerr << "Error: Numeric operand expected" << std::endl;
         is_number = false;
-    } 
+    }
 
     return is_number;
 }
 
-int CalculatorCommands(std::string& command)
+int ReadCommand(std::string& command)
 {
     std::cin >> command;
 
-    if (command == "q") 
-        return 0;
+    if (command == "q")
+    {
+        return COMMAND_EXIT;
+    }
 
-    if (command == "c") 
-        return 2;
-    
-    if (command == "=") 
-        return 3;
+    if (command == "c")
+    {
+        return COMMAND_RESET;
+    }
 
-    if (command == "+") 
-        return 10; 
+    if (command == "=")
+    {
+        return COMMAND_EQUALLY;
+    }
 
-    if (command == "-") 
-        return 11;  
-    
-    if (command == "*") 
-        return 12; 
-    
-    if (command == "**") 
-        return 13; 
+    if (command == "+")
+    {
+        return COMMAND_PLUS;
+    }
 
-    if (command == "/") 
-        return 14;    
-    
-    if (command == ":") 
-        return 15; 
+    if (command == "-")
+    {
+        return COMMAND_MINUS;
+    }
 
-    if (command == "s") 
-        return 16; 
-    
+    if (command == "*")
+    {
+        return COMMAND_MULTIPLY;
+    }
+
+    if (command == "**")
+    {
+        return COMMAND_RAISE_TO_POWER;
+    }
+
+    if (command == "/")
+    {
+        return COMMAND_DIVIDED;
+    }
+
+    if (command == ":") {
+        return COMMAND_NEW_NUMBER;
+    }
+
+    if (command == "s")
+    {
+        return COMMAND_SAVE;
+    }
+
     if (command == "l")
-        return 17;
+    {
+        return COMMAND_EXTRACT_FROM_MEMORY;
+    }
 
     std::cerr << "Error: Unknown token " << command << std::endl;
-    return -1; 
+    return COMMAND_EXIT_BY_ERROR;
 }
 
-void Calculation (int command, Number& result, Number number_2, bool& result_inf)
+void Calculate (int command, Number& result, Number second_number)
 {
-    if (command == 10) // "+"
+    if (command == COMMAND_PLUS) // "+"
     {
-        result += number_2;
+        result += second_number;
 
-    } else if (command == 11) // "-"
+    } else if (command == COMMAND_MINUS) // "-"
     {
-        result -= number_2;
+        result -= second_number;
 
-    } else if (command == 12) // "*"
+    } else if (command == COMMAND_MULTIPLY) // "*"
     {
-        result *= number_2;
+        result *= second_number;
 
-    } else if (command == 13) // "**"
+    } else if (command == COMMAND_RAISE_TO_POWER) // "**"
     {
-        result = std::pow(result, number_2);
+        result = std::pow(result, second_number);
 
-    } else if (command == 14) // "/"
+    } else if (command == COMMAND_DIVIDED) // "/"
     {
-        if (number_2 != 0) 
-        {
-            result /= number_2;
-        } else 
-        {
-            result_inf = true;
-        }
-    } else if (command == 15) // ":"
+        result /= second_number;
+
+    } else if (command == COMMAND_NEW_NUMBER) // ":"
     {
-        result_inf = false;
-        result = number_2;
-    } 
+        result = second_number;
+    }
 }
 
-// Возвращает true, если работа завершилась штатно 
-// командой q. Если из-за ошибки, возвращает false.
+
 bool RunCalculatorCycle()
 {
     // Число калькулятора.
-    Number result;
+    Number result = 0;
     Number memory = 0;
     bool memory_is_used = false;
-    bool end_with_q = true;
-    bool calculator_is_working = true;
-    bool result_inf = false; // деление на 0
 
     if(!ReadNumber(result))
     {
         return false;
     }
 
-    while (calculator_is_working == true) 
+    while (true)
     {
         std::string command;
-        int is_command = CalculatorCommands(command);
+        int command_code = ReadCommand(command);
 
-        if (is_command == 0) // завершение работы по q
+        if (command_code == COMMAND_EXIT) // завершение работы по q
         {
-            end_with_q = true;
-            calculator_is_working = false;
+            return true;
 
-        } else if (is_command == -1) // завершение работы с ошибкой
+        } else if (command_code == COMMAND_EXIT_BY_ERROR) // завершение работы с ошибкой
         {
-            end_with_q = false;
-            calculator_is_working = false;
+            return false;
 
-        } else if (is_command >= 10 && is_command <= 15) // получена мат.операция
+        } else if (command_code == COMMAND_PLUS || command_code == COMMAND_MINUS || command_code == COMMAND_MULTIPLY || command_code == COMMAND_RAISE_TO_POWER || command_code == COMMAND_DIVIDED || command_code == COMMAND_NEW_NUMBER) // получена мат.операция
         {
-            Number number_2;
-            bool is_number = ReadNumber(number_2);
+            Number second_number = 0;
+            bool is_number = ReadNumber(second_number);
 
-            if (is_number == false)
-            {   
-                calculator_is_working = false;
-                end_with_q = false;
-
-            } else 
+            if (!is_number)
             {
-                Calculation (is_command, result, number_2, result_inf);
+                return false;
+
+            } else
+            {
+                Calculate (command_code, result, second_number);
             }
-        } else if (is_command == 2) // сбросить значение (c)
+        } else if (command_code == COMMAND_RESET) // сбросить значение (c)
         {
-            result_inf = false;
             result = 0;
-        } else if (is_command == 3) // знак равно
+        } else if (command_code == COMMAND_EQUALLY) // знак равно
         {
-            if(result_inf == false) 
-            {
-                std::cout << result << std::endl;
-            } else {
-                std::cout << "inf" << std::endl;
-            }
-        } else if (is_command == 16) // знак s  сохранение в память
+            std::cout << result << std::endl;
+        } else if (command_code == COMMAND_SAVE) // знак s  сохранение в память
         {
             memory_is_used = true;
             memory = result;
-        }  else if (is_command == 17) // знак l  извлечение из памяти
+        } else if (command_code == COMMAND_EXTRACT_FROM_MEMORY) // знак l  извлечение из памяти
         {
-            if (memory_is_used ==  true)
+            if (memory_is_used)
             {
                 result = memory;
             } else
             {
                 std::cerr << "Error: Memory is empty" << std::endl;
-                calculator_is_working = false;
+                return false;
             }
-        } 
+        }
     }
-    return end_with_q;
+    return true;
 }
