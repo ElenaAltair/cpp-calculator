@@ -13,4 +13,4 @@ bool RunCalculatorCycle();
 
 int ReadCommand(std::string& command);
 
-void Calculate(int command, Number &result, Number number_2);
+void Calculate(int command, Number& result, Number second_number);
