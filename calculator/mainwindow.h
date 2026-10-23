@@ -65,4 +65,5 @@ class MainWindow : public QMainWindow {
   Operation current_operation_ = Operation::NO_OPERATION;
   Number number_in_memory_ui_ = 0;
   bool memory_is_used_ui_ = false;
+  bool is_result_shown_ = false;
 };
