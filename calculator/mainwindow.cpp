@@ -58,67 +58,67 @@ void MainWindow::SetControllerCallback(std::function<void(ControllerType)> cb) {
 }
 
 void MainWindow::on_tb_one_clicked() {
-  digit_cb_(1);
+  CallDigit(1);
 }
 
 void MainWindow::on_tb_two_clicked() {
-  digit_cb_(2);
+  CallDigit(2);
 }
 
 void MainWindow::on_tb_three_clicked() {
-  digit_cb_(3);
+  CallDigit(3);
 }
 
 void MainWindow::on_tb_four_clicked() {
-  digit_cb_(4);
+  CallDigit(4);
 }
 
 void MainWindow::on_tb_five_clicked() {
-  digit_cb_(5);
+  CallDigit(5);
 }
 
 void MainWindow::on_tb_six_clicked() {
-  digit_cb_(6);
+  CallDigit(6);
 }
 
 void MainWindow::on_tb_seven_clicked() {
-  digit_cb_(7);
+  CallDigit(7);
 }
 
 void MainWindow::on_tb_eight_clicked() {
-  digit_cb_(8);
+  CallDigit(8);
 }
 
 void MainWindow::on_tb_nine_clicked() {
-  digit_cb_(9);
+  CallDigit(9);
 }
 
 void MainWindow::on_tb_zero_clicked() {
-  digit_cb_(0);
+  CallDigit(0);
 }
 
 void MainWindow::on_tb_power_clicked() {
-  operation_cb_(Operation::POWER);
+  CallOperation(Operation::POWER);
 }
 
 void MainWindow::on_tb_add_clicked() {
-  operation_cb_(Operation::ADDITION);
+  CallOperation(Operation::ADDITION);
 }
 
 void MainWindow::on_tb_divide_clicked() {
-  operation_cb_(Operation::DIVISION);
+  CallOperation(Operation::DIVISION);
 }
 
 void MainWindow::on_tb_multiplicate_clicked() {
-  operation_cb_(Operation::MULTIPLICATION);
+  CallOperation(Operation::MULTIPLICATION);
 }
 
 void MainWindow::on_tb_substract_clicked() {
-  operation_cb_(Operation::SUBTRACTION);
+  CallOperation(Operation::SUBTRACTION);
 }
 
 void MainWindow::on_tb_equal_clicked() {
-  control_cb_(ControlKey::EQUALS);
+  CallControl(ControlKey::EQUALS);
 }
 
 void MainWindow::on_cmb_controller_currentIndexChanged(int index) {
@@ -137,33 +137,35 @@ void MainWindow::on_cmb_controller_currentIndexChanged(int index) {
   } else if (type == "Rational") {
     controller_type = ControllerType::RATIONAL;
   }
-  controller_cb_(controller_type);
+  if (controller_cb_) {
+    controller_cb_(controller_type);
+  }
 }
 
 void MainWindow::on_tb_reset_clicked() {
-  control_cb_(ControlKey::CLEAR);
+  CallControl(ControlKey::CLEAR);
 }
 
 void MainWindow::on_tb_ms_clicked() {
-  control_cb_(ControlKey::MEM_SAVE);
+  CallControl(ControlKey::MEM_SAVE);
 }
 
 void MainWindow::on_tn_mr_clicked() {
-  control_cb_(ControlKey::MEM_LOAD);
+  CallControl(ControlKey::MEM_LOAD);
 }
 
 void MainWindow::on_tb_mc_clicked() {
-  control_cb_(ControlKey::MEM_CLEAR);
+  CallControl(ControlKey::MEM_CLEAR);
 }
 
 void MainWindow::on_tb_negate_clicked() {
-  control_cb_(ControlKey::PLUS_MINUS);
+  CallControl(ControlKey::PLUS_MINUS);
 }
 
 void MainWindow::on_tb_backspace_clicked() {
-  control_cb_(ControlKey::BACKSPACE);
+  CallControl(ControlKey::BACKSPACE);
 }
 
 void MainWindow::on_tb_extra_clicked() {
-  control_cb_(ControlKey::EXTRA_KEY);
+  CallControl(ControlKey::EXTRA_KEY);
 }

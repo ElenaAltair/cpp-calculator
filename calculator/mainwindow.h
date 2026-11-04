@@ -58,4 +58,13 @@ class MainWindow : public QMainWindow {
 
  private:
   Ui::MainWindow* ui;
+  inline void CallDigit(int key) const {
+    if (digit_cb_) digit_cb_(key);
+  }
+  inline void CallOperation(Operation key) const {
+    if (operation_cb_) operation_cb_(key);
+  }
+  inline void CallControl(ControlKey key) const {
+    if (control_cb_) control_cb_(key);
+  }
 };
